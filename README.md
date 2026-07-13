@@ -2,7 +2,7 @@
 
 Bu proje, kullanıcıların günlük işlerini, projelerini ve hedeflerini organize etmelerine yardımcı olan bir **Kişisel Görev Yönetim Sistemi** web uygulamasıdır.
 
-**Geliştirici:** Doğukan Oğan
+**Geliştirici:** Doğukan Ogan
 
 ## Kullanılan Teknolojiler
 
