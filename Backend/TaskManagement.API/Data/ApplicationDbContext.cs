@@ -60,6 +60,23 @@ namespace TaskManagement.API.Data
                 .WithMany(t => t.Comments)
                 .HasForeignKey(tc => tc.TaskId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Seed Data (Demo Kullanıcı)
+            var demoUserId = Guid.Parse("550e8400-e29b-41d4-a716-446655440000");
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = demoUserId,
+                    Username = "demo_user",
+                    Email = "demo@example.com",
+                    PasswordHash = "$2a$11$9/Xy4o/Gz7R8lK0m1h.W2.E1H5r3/iHh4rXf6Z9l2o1P1o1P1o1P1", // Örnek hash
+                    FirstName = "Demo",
+                    LastName = "Kullanıcı",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsActive = true
+                }
+            );
         }
     }
 }
