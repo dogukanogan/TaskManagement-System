@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using TaskManagement.API.Models.Enums;
 
@@ -14,28 +13,22 @@ namespace TaskManagement.API.DTOs.Task
         public DateTime? DueDate { get; set; }
         public DateTime? CompletedAt { get; set; }
         public Guid? CategoryId { get; set; }
+        public string? CategoryName { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 
     public class CreateTaskDto
     {
-        [Required(ErrorMessage = "Title is required")]
-        [MaxLength(200)]
+        [Required, StringLength(200)]
         public string Title { get; set; } = string.Empty;
-
         public string? Description { get; set; }
-
-        [Range(1, 5)]
-        public Priority Priority { get; set; } = Priority.Low;
-
+        public Priority Priority { get; set; } = Priority.Normal;
         public DateTime? DueDate { get; set; }
         public Guid? CategoryId { get; set; }
     }
 
     public class UpdateTaskDto
     {
-        [MaxLength(200)]
         public string? Title { get; set; }
         public string? Description { get; set; }
         public Priority? Priority { get; set; }
@@ -50,7 +43,9 @@ namespace TaskManagement.API.DTOs.Task
         public Priority? Priority { get; set; }
         public Guid? CategoryId { get; set; }
         public string? SearchTerm { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime? DueDateFrom { get; set; }
+        public DateTime? DueDateTo { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.API.Data;
+using TaskManagement.API.DTOs;
 using TaskManagement.API.DTOs.Task;
 using TaskManagement.API.Models;
 using TaskManagement.API.Models.Enums;
@@ -8,7 +9,8 @@ namespace TaskManagement.API.Services
 {
     public interface ITaskService
     {
-        Task<List<TaskItemDto>> GetAllForUserAsync(Guid userId, TaskFilterDto filter);
+        Task<PagedResult<TaskItemDto>> GetAllForUserAsync(Guid userId, TaskFilterDto filter);
+        Task<PagedResult<TaskItemDto>> GetOverdueTasksAsync(Guid userId, int page = 1, int pageSize = 10);
         Task<TaskItemDto?> GetByIdAsync(Guid id, Guid userId);
         Task<TaskItemDto> CreateAsync(CreateTaskDto dto, Guid userId);
         Task<TaskItemDto?> UpdateAsync(Guid id, UpdateTaskDto dto, Guid userId);
@@ -19,14 +21,16 @@ namespace TaskManagement.API.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly AutoMapper.IMapper _mapper;
+        private readonly ILogger<TaskService> _logger;
 
-        public TaskService(ApplicationDbContext context, AutoMapper.IMapper mapper)
+        public TaskService(ApplicationDbContext context, AutoMapper.IMapper mapper, ILogger<TaskService> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<List<TaskItemDto>> GetAllForUserAsync(Guid userId, TaskFilterDto filter)
+        public async Task<PagedResult<TaskItemDto>> GetAllForUserAsync(Guid userId, TaskFilterDto filter)
         {
             var query = _context.Tasks
                 .Include(t => t.Category)
@@ -53,11 +57,35 @@ namespace TaskManagement.API.Services
             if (filter.DueDateTo.HasValue)
                 query = query.Where(t => t.DueDate <= filter.DueDateTo.Value);
 
+            var totalCount = await query.CountAsync();
+
             var tasks = await query
                 .OrderByDescending(t => t.CreatedAt)
+                .Skip((filter.Page - 1) * filter.PageSize)
+                .Take(filter.PageSize)
                 .ToListAsync();
 
-            return _mapper.Map<List<TaskItemDto>>(tasks);
+            var dtos = _mapper.Map<List<TaskItemDto>>(tasks);
+            return new PagedResult<TaskItemDto>(dtos, totalCount, filter.Page, filter.PageSize);
+        }
+
+        public async Task<PagedResult<TaskItemDto>> GetOverdueTasksAsync(Guid userId, int page = 1, int pageSize = 10)
+        {
+            var query = _context.Tasks
+                .Include(t => t.Category)
+                .Where(t => t.UserId == userId && t.Status == TaskItemStatus.Pending && t.DueDate.HasValue && t.DueDate < DateTime.UtcNow)
+                .AsQueryable();
+
+            var totalCount = await query.CountAsync();
+
+            var tasks = await query
+                .OrderBy(t => t.DueDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var dtos = _mapper.Map<List<TaskItemDto>>(tasks);
+            return new PagedResult<TaskItemDto>(dtos, totalCount, page, pageSize);
         }
 
         public async Task<TaskItemDto?> GetByIdAsync(Guid id, Guid userId)
@@ -88,6 +116,8 @@ namespace TaskManagement.API.Services
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation("Yeni görev oluşturuldu: {TaskId} (Kullanıcı: {UserId})", task.Id, userId);
+
             // Category bilgisini de dahil ederek geri dön
             var created = await _context.Tasks
                 .Include(t => t.Category)
@@ -103,7 +133,10 @@ namespace TaskManagement.API.Services
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
             if (task == null)
+            {
+                _logger.LogWarning("Güncellenmek istenen görev bulunamadı. Görev: {TaskId}, Kullanıcı: {UserId}", id, userId);
                 return null;
+            }
 
             if (dto.Title != null)
                 task.Title = dto.Title;
@@ -130,6 +163,8 @@ namespace TaskManagement.API.Services
             task.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
+            
+            _logger.LogInformation("Görev güncellendi: {TaskId} (Kullanıcı: {UserId})", id, userId);
 
             return _mapper.Map<TaskItemDto>(task);
         }
@@ -140,10 +175,15 @@ namespace TaskManagement.API.Services
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
             if (task == null)
+            {
+                _logger.LogWarning("Silinmek istenen görev bulunamadı. Görev: {TaskId}, Kullanıcı: {UserId}", id, userId);
                 return false;
+            }
 
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
+            
+            _logger.LogInformation("Görev silindi: {TaskId} (Kullanıcı: {UserId})", id, userId);
 
             return true;
         }
