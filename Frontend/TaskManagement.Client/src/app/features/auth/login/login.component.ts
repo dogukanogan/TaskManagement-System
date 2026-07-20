@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -17,12 +18,7 @@ import { AuthService } from '../../../core/services/auth.service';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule
+    LucideAngularModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -31,6 +27,8 @@ export class LoginComponent {
   loginForm: FormGroup;
   isLoading = false;
   hidePassword = true;
+  rememberMe = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +55,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        this.snackBar.open(err.error?.message || 'Giriş başarısız', 'Kapat', { duration: 3000, panelClass: ['error-snackbar'] });
+        this.errorMessage = err.error?.message || 'Giriş başarısız';
       }
     });
   }

@@ -9,8 +9,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
-        // Auto logout if 401 response returned from api
+      if (error.status === 401 && !req.url.includes('/login')) {
+        // Auto logout if 401 response returned from api (except login itself)
         authService.logout();
         location.reload();
       }

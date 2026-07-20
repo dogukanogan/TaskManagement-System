@@ -1,64 +1,137 @@
-<div class="auth-container">
-  <mat-card class="auth-card">
-    <mat-card-header>
-      <div mat-card-avatar class="auth-header-image">
-        <mat-icon>person_add</mat-icon>
+<div class="min-h-screen relative bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6 transition-colors duration-300">
+  
+  <!-- Back Button -->
+  <a routerLink="/login" class="absolute top-6 left-6 md:top-8 md:left-8 flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white dark:hover:bg-slate-800 rounded-xl transition-all duration-300 group shadow-sm border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+    <lucide-icon name="arrow-left" [size]="18" class="group-hover:-translate-x-1 transition-transform"></lucide-icon>
+    <span>Geri Dön</span>
+  </a>
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-10 w-full max-w-md transition-colors duration-300 relative">
+    <div class="flex items-center gap-2.5 mb-8">
+      <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-blue-900/20">
+        <lucide-icon name="check-square" [size]="18" class="text-white"></lucide-icon>
       </div>
-      <mat-card-title>Kayıt Ol</mat-card-title>
-      <mat-card-subtitle>Task Management System</mat-card-subtitle>
-    </mat-card-header>
+      <span class="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight transition-colors">TaskFlow</span>
+    </div>
+    
+    <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 transition-colors">Hesabınızı oluşturun</h2>
+    <p class="text-slate-500 dark:text-slate-400 text-sm mb-7 transition-colors">Bize katılın ve görevlerinizi verimli bir şekilde yönetmeye başlayın.</p>
 
-    <mat-card-content>
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
-        <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Ad</mat-label>
-            <input matInput formControlName="firstName">
-            <mat-error *ngIf="registerForm.get('firstName')?.hasError('required')">Ad zorunludur</mat-error>
-          </mat-form-field>
+    <div *ngIf="errorMessage" class="flex items-center gap-2 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm px-3.5 py-2.5 rounded-xl mb-4 transition-colors">
+      <lucide-icon name="alert-circle" [size]="14"></lucide-icon>
+      {{ errorMessage }}
+    </div>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Soyad</mat-label>
-            <input matInput formControlName="lastName">
-            <mat-error *ngIf="registerForm.get('lastName')?.hasError('required')">Soyad zorunludur</mat-error>
-          </mat-form-field>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+      
+      <!-- First Name & Last Name -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Ad</label>
+          <div class="relative">
+            <input type="text" formControlName="firstName" placeholder="Doğukan" 
+              class="w-full rounded-xl border bg-white dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-sm px-3.5 py-2.5 border-slate-200 dark:border-slate-700"
+              [class.border-red-400]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" />
+          </div>
         </div>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Kullanıcı Adı</mat-label>
-          <input matInput formControlName="username">
-          <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="registerForm.get('username')?.hasError('required')">Kullanıcı adı zorunludur</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Email Adresi</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-icon matSuffix>email</mat-icon>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('required')">Email zorunludur</mat-error>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('email')">Geçerli bir email giriniz</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Şifre</mat-label>
-          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          <mat-error *ngIf="registerForm.get('password')?.hasError('required')">Şifre zorunludur</mat-error>
-          <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">Şifre en az 6 karakter olmalı</mat-error>
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-
-    <mat-card-actions class="auth-actions">
-      <button mat-flat-button color="primary" [disabled]="registerForm.invalid || isLoading" (click)="onSubmit()" class="full-width-btn">
-        {{ isLoading ? 'Kayıt Olunuyor...' : 'Kayıt Ol' }}
-      </button>
-      <div class="auth-links">
-        <span>Zaten hesabın var mı?</span>
-        <a routerLink="/login" mat-button color="accent">Giriş Yap</a>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Soyad</label>
+          <div class="relative">
+            <input type="text" formControlName="lastName" placeholder="Ogan" 
+              class="w-full rounded-xl border bg-white dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-sm px-3.5 py-2.5 border-slate-200 dark:border-slate-700"
+              [class.border-red-400]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" />
+          </div>
+        </div>
       </div>
-    </mat-card-actions>
-  </mat-card>
+
+      <!-- Username -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Kullanıcı Adı</label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+            <lucide-icon name="user" [size]="15"></lucide-icon>
+          </span>
+          <input type="text" formControlName="username" placeholder="dogukanogan" 
+            class="w-full rounded-xl border bg-white dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-sm pl-10 pr-3.5 py-2.5 border-slate-200 dark:border-slate-700"
+            [class.border-red-400]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">İş e-posta adresi</label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+            <lucide-icon name="mail" [size]="15"></lucide-icon>
+          </span>
+          <input type="email" formControlName="email" placeholder="dogukan@example.com" 
+            class="w-full rounded-xl border bg-white dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-sm pl-10 pr-3.5 py-2.5 border-slate-200 dark:border-slate-700"
+            [class.border-red-400]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Şifre</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+              <lucide-icon name="lock" [size]="15"></lucide-icon>
+            </span>
+            <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Min. 6 karakter" 
+              class="w-full rounded-xl border bg-white dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-sm pl-10 pr-10 py-2.5 border-slate-200 dark:border-slate-700"
+              [class.border-red-400]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
+            <button type="button" (click)="hidePassword = !hidePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none">
+              <lucide-icon [name]="hidePassword ? 'eye-off' : 'eye'" [size]="15"></lucide-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">Şifreyi onayla</label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+            <lucide-icon name="lock" [size]="15"></lucide-icon>
+          </span>
+          <input type="password" formControlName="confirmPassword" placeholder="••••••••" 
+            class="w-full rounded-xl border bg-white dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-sm pl-10 pr-3.5 py-2.5 border-slate-200 dark:border-slate-700"
+            [class.border-red-400]="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched" />
+        </div>
+        <p *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched" class="text-xs text-red-500 dark:text-red-400">Şifreler eşleşmiyor</p>
+      </div>
+
+      <!-- Agreement -->
+      <label class="flex items-start gap-2.5 cursor-pointer mt-1 select-none">
+        <div (click)="agreeTerms = !agreeTerms" 
+             class="w-4 h-4 mt-0.5 rounded border-2 flex items-center justify-center transition-colors duration-300 flex-shrink-0 cursor-pointer"
+             [ngClass]="agreeTerms ? 'bg-blue-600 border-blue-600' : 'border-slate-300 dark:border-slate-600'">
+          <lucide-icon *ngIf="agreeTerms" name="check" [size]="10" class="text-white"></lucide-icon>
+        </div>
+        <span class="text-sm text-slate-600 dark:text-slate-400 transition-colors">
+          <button type="button" class="text-blue-600 dark:text-blue-400 hover:underline">Kullanım Koşulları</button>'nı ve <button type="button" class="text-blue-600 dark:text-blue-400 hover:underline">Gizlilik Politikası</button>'nı kabul ediyorum.
+        </span>
+      </label>
+
+      <!-- Submit -->
+      <button type="submit" [disabled]="!agreeTerms || registerForm.invalid || isLoading" 
+        class="inline-flex w-full mt-2 items-center justify-center gap-2 font-medium rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 text-sm bg-blue-600 text-white hover:bg-blue-700 shadow-sm shadow-blue-200/50 dark:shadow-blue-900/20">
+        <ng-container *ngIf="isLoading">
+          <lucide-icon name="refresh-cw" [size]="15" class="animate-spin"></lucide-icon>
+          Hesap oluşturuluyor...
+        </ng-container>
+        <ng-container *ngIf="!isLoading">
+          Hesap oluştur
+          <lucide-icon name="arrow-right" [size]="15"></lucide-icon>
+        </ng-container>
+      </button>
+
+    </form>
+
+    <p class="text-sm text-slate-500 dark:text-slate-400 text-center mt-6 transition-colors">
+      Zaten hesabınız var mı? 
+      <a routerLink="/login" class="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 ml-1 transition-colors">Giriş yapın</a>
+    </p>
+  </div>
 </div>

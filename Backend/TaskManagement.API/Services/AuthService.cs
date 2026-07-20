@@ -41,7 +41,7 @@ namespace TaskManagement.API.Services
                 Id = Guid.NewGuid(),
                 Username = dto.Username,
                 Email = dto.Email,
-                PasswordHash = .Net.BCrypt.HashPasswBCryptord(dto.Password),
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 CreatedAt = DateTime.UtcNow,

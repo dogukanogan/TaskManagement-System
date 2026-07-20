@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -17,12 +18,7 @@ import { AuthService } from '../../../core/services/auth.service';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule
+    LucideAngularModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'] // Using the same css essentially
@@ -31,6 +27,8 @@ export class RegisterComponent {
   registerForm: FormGroup;
   isLoading = false;
   hidePassword = true;
+  agreeTerms = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -43,8 +41,14 @@ export class RegisterComponent {
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, { validators: this.passwordMatchValidator });
+  }
+
+  passwordMatchValidator(g: FormGroup) {
+    return g.get('password')?.value === g.get('confirmPassword')?.value
+      ? null : { 'mismatch': true };
   }
 
   onSubmit(): void {
@@ -60,7 +64,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        this.snackBar.open(err.error?.message || 'Kayıt başarısız', 'Kapat', { duration: 3000, panelClass: ['error-snackbar'] });
+        this.errorMessage = err.error?.message || 'Kayıt başarısız';
       }
     });
   }
