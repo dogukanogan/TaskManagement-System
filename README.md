@@ -37,7 +37,7 @@ Bu proje, kullanıcıların günlük işlerini, projelerini ve hedeflerini organ
 
 - `Backend/` - .NET 8 Web API projesini, servis katmanlarını, Repository modellerini ve Entity tanımlamalarını içerir.
 - `Frontend/TaskManagement.Client/` - Standalone Component mimarisi kullanılarak geliştirilmiş, Angular 17 tabanlı modern kullanıcı arayüzü kodlarını barındırır.
-- `Database/` - Referans amaçlı SQL şema ve örnek veri betiklerini barındırır (Proje EF Core Code-First yaklaşımı ile kendi veritabanını oluşturabilir).
+- `Database/` - Referans amaçlı SQL şema ve örnek veri betiklerini barındırır.
 
 ---
 
