@@ -45,7 +45,12 @@ Bu proje, kullanıcıların günlük işlerini, projelerini ve hedeflerini organ
 
 ### Backend (.NET API)
 1. `Backend/` dizinine gidin.
-2. `appsettings.json` içerisindeki PostgreSQL veya Oracle bağlantı dizesini (Connection String) kendi veritabanınıza göre güncelleyin.
+2. Şifrelerinizi koddan uzak tutmak için **.NET User Secrets** kullanın:
+   ```bash
+   dotnet user-secrets init
+   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=db;Username=usr;Password=şifreniz"
+   dotnet user-secrets set "Jwt:Secret" "gizli-jwt-anahtarınız"
+   ```
 3. Terminalde EF Core ile veritabanını oluşturun: `dotnet ef database update`
 4. Projeyi çalıştırın: `dotnet run` (API varsayılan olarak `https://localhost:7111` portunda ayağa kalkacaktır).
 
