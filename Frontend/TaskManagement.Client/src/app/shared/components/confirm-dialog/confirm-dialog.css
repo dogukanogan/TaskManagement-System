@@ -1,0 +1,29 @@
+h2[mat-dialog-title] {
+  margin: 0;
+  padding: 24px 24px 0 24px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+mat-dialog-content {
+  padding: 20px 24px;
+  font-size: 1.1rem;
+  color: var(--mat-sys-on-surface-variant);
+  line-height: 1.5;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+  gap: 12px;
+}
+
+button {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.confirm-btn {
+  background-color: #f44336 !important;
+  color: white !important;
+}

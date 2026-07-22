@@ -1,0 +1,74 @@
+<div class="task-form-container">
+  <div class="header-column">
+    <h2>{{ isEditMode() ? 'Görevi Düzenle' : 'Yeni Görev Oluştur' }}</h2>
+    <button mat-stroked-button (click)="cancel()" type="button" class="back-btn">
+      <mat-icon>arrow_back</mat-icon> İptal
+    </button>
+  </div>
+
+  <mat-card class="form-card">
+    <mat-card-content>
+      <div *ngIf="loading()" class="loading-state">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #taskForm="ngForm" *ngIf="!loading()">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Görev Başlığı</mat-label>
+          <input matInput placeholder="Örn: Haftalık raporu hazırla" 
+                 [(ngModel)]="taskData.title" name="title" required maxlength="200">
+          <mat-error>Başlık zorunludur</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Açıklama (İsteğe Bağlı)</mat-label>
+          <textarea matInput placeholder="Görev detayları..." 
+                    [(ngModel)]="taskData.description" name="description" rows="4"></textarea>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Kategori</mat-label>
+            <mat-select [(ngModel)]="taskData.categoryId" name="categoryId" required>
+              <mat-option class="add-category-option" (click)="openNewCategoryDialog()">
+                <mat-icon color="primary">add</mat-icon>
+                <span class="add-text">Yeni Kategori Ekle</span>
+              </mat-option>
+              <mat-divider></mat-divider>
+              <mat-option *ngFor="let cat of categories()" [value]="cat.id">
+                {{ cat.name }}
+              </mat-option>
+            </mat-select>
+            <button mat-icon-button matSuffix *ngIf="taskData.categoryId" (click)="editSelectedCategory($event)" type="button" title="Seçili Kategoriyi Düzenle" color="primary">
+              <mat-icon>palette</mat-icon>
+            </button>
+            <mat-error>Kategori seçimi zorunludur</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Öncelik</mat-label>
+            <mat-select [(ngModel)]="taskData.priority" name="priority" required>
+              <mat-option *ngFor="let p of priorities" [value]="p.value">
+                {{ p.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Bitiş Tarihi (İsteğe Bağlı)</mat-label>
+          <input matInput type="date" [(ngModel)]="taskData.dueDate" name="dueDate">
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.form.valid || submitting()">
+            <mat-icon *ngIf="!submitting()">{{ isEditMode() ? 'save' : 'add_task' }}</mat-icon>
+            <mat-spinner *ngIf="submitting()" diameter="20" class="btn-spinner"></mat-spinner>
+            {{ isEditMode() ? 'Değişiklikleri Kaydet' : 'Görevi Oluştur' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

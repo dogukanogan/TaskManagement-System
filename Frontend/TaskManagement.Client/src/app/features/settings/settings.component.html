@@ -1,0 +1,120 @@
+<div class="settings-container">
+  <div class="header-row">
+    <h2>Ayarlar</h2>
+  </div>
+
+  <div class="settings-grid">
+    <!-- Profil Güncelleme -->
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Kişisel Bilgiler</mat-card-title>
+        <mat-card-subtitle>İsim ve soyisminizi buradan güncelleyebilirsiniz.</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form (ngSubmit)="updateProfile()" #profileForm="ngForm" class="settings-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Adınız</mat-label>
+            <input matInput [(ngModel)]="profileData.firstName" name="firstName" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Soyadınız</mat-label>
+            <input matInput [(ngModel)]="profileData.lastName" name="lastName" required>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-flat-button color="primary" type="submit" [disabled]="!profileForm.valid || isUpdatingProfile()">
+              {{ isUpdatingProfile() ? 'Güncelleniyor...' : 'Güncelle' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Şifre Değiştirme -->
+    <mat-card class="settings-card">
+      <mat-card-header>
+        <mat-card-title>Şifre İşlemleri</mat-card-title>
+        <mat-card-subtitle>Hesap güvenliğiniz için şifrenizi değiştirin.</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form (ngSubmit)="changePassword()" #passwordForm="ngForm" class="settings-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Mevcut Şifre</mat-label>
+            <input matInput type="password" [(ngModel)]="passwordData.currentPassword" name="currentPassword" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Yeni Şifre</mat-label>
+            <input matInput type="password" [(ngModel)]="passwordData.newPassword" name="newPassword" required>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-flat-button color="accent" type="submit" [disabled]="!passwordForm.valid || isUpdatingPassword()">
+              {{ isUpdatingPassword() ? 'Değiştiriliyor...' : 'Şifreyi Değiştir' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Görünüm Ayarları -->
+    <mat-card class="settings-card appearance-card">
+      <mat-card-header>
+        <mat-card-title>Görünüm Ayarları</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="theme-toggle-row">
+          <div class="theme-info">
+            <mat-icon>{{ themeService.isDarkMode() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+            <span>Koyu Mod (Dark Mode)</span>
+          </div>
+          <mat-slide-toggle [checked]="themeService.isDarkMode()" (change)="themeService.toggleTheme()" color="primary">
+            {{ themeService.isDarkMode() ? 'Açık' : 'Kapalı' }}
+          </mat-slide-toggle>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Kategori Yönetimi -->
+    <mat-card class="settings-card categories-card">
+      <mat-card-header class="categories-header">
+        <mat-card-title>Kategoriler</mat-card-title>
+        <mat-card-subtitle>Görevlerinizi organize etmek için kategorileri yönetin.</mat-card-subtitle>
+        <span class="spacer"></span>
+        <button mat-stroked-button color="primary" (click)="openCategoryDialog()" class="add-cat-btn">
+          <mat-icon>add</mat-icon> Yeni Ekle
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div *ngIf="isLoadingCategories()" class="loading-state">
+          <mat-spinner diameter="30"></mat-spinner>
+        </div>
+        
+        <mat-list *ngIf="!isLoadingCategories()" class="category-list">
+          <mat-list-item *ngFor="let cat of categories()" class="category-list-item">
+            <div matListItemTitle>
+              <span class="category-badge" [ngStyle]="{'background-color': (cat.color || '#9e9e9e') + '22', 'color': (cat.color || '#9e9e9e'), 'border': '1px solid ' + (cat.color || '#9e9e9e') + '55'}">{{ cat.name }}</span>
+            </div>
+            <div matListItemMeta class="category-actions">
+              <button mat-icon-button (click)="openCategoryDialog(cat)" title="Düzenle">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteCategory(cat)" title="Sil">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+          
+          <div *ngIf="categories().length === 0" class="empty-state">
+            Henüz kategori eklenmemiş.
+          </div>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

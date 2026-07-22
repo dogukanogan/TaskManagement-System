@@ -1,0 +1,139 @@
+.settings-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-row {
+  margin-bottom: 24px;
+}
+
+.header-row h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-card {
+  padding: 8px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.theme-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  margin-top: 8px;
+}
+
+.theme-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.theme-info mat-icon {
+  color: #5c6bc0;
+}
+
+.categories-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.add-cat-btn {
+  margin-left: auto;
+}
+
+.category-list-item {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.category-list-item:last-child {
+  border-bottom: none;
+}
+
+.category-actions {
+  display: flex;
+  align-items: center;
+}
+
+.empty-state {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-md);
+  margin-top: 16px;
+}
+:host-context(.dark-theme) .empty-state {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.category-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.categories-header mat-card-subtitle {
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .categories-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .add-cat-btn {
+    margin-left: 0;
+  }
+}

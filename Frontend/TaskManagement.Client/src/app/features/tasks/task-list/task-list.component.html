@@ -1,0 +1,95 @@
+<div class="task-list-container">
+  <div class="header-row">
+    <div class="header-titles">
+      <h2>Görevler</h2>
+      <p class="subtitle">Tüm görevlerinizi buradan yönetebilirsiniz.</p>
+    </div>
+    <button mat-flat-button color="primary" routerLink="/tasks/new" class="add-task-btn">
+      <mat-icon>add</mat-icon> Yeni Görev
+    </button>
+  </div>
+
+  <div class="toolbar-section">
+    <!-- Search Row -->
+    <div class="search-box">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" class="search-input" placeholder="Görevler arasında hızlıca ara..." [(ngModel)]="filter.searchTerm" (ngModelChange)="onSearchChange()" (keyup.enter)="applyFilter()">
+    </div>
+
+    <!-- Filters Row -->
+    <div class="filters-row">
+      <div class="filter-group">
+        <span class="filter-label"><mat-icon>filter_list</mat-icon> Filtrele:</span>
+        
+        <select class="custom-select" [(ngModel)]="filter.categoryId" (change)="applyFilter()">
+          <option [ngValue]="undefined">Tüm Kategoriler</option>
+          <option *ngFor="let cat of categories()" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+
+        <select class="custom-select" [(ngModel)]="filter.status" (change)="applyFilter()">
+          <option [ngValue]="undefined">Tüm Durumlar</option>
+          <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
+        </select>
+
+        <select class="custom-select" [(ngModel)]="filter.priority" (change)="applyFilter()">
+          <option [ngValue]="undefined">Tüm Öncelikler</option>
+          <option *ngFor="let priority of priorities" [value]="priority.value">{{ priority.label }}</option>
+        </select>
+      </div>
+
+      <button mat-stroked-button class="clear-btn" (click)="clearFilter()" *ngIf="filter.categoryId || filter.status !== undefined || filter.priority !== undefined || filter.searchTerm">
+        <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin-right: 5px;">close</mat-icon> Filtreleri Temizle
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading() && tasks().length === 0" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Görevler yükleniyor...</p>
+  </div>
+
+  <div *ngIf="!loading() && tasks().length === 0" class="empty-state">
+    <mat-icon class="empty-icon">task</mat-icon>
+    <h3>Görev Bulunamadı</h3>
+    <p>Henüz hiç görevin yok veya aramana uygun görev bulunamadı.</p>
+    <button mat-stroked-button color="primary" routerLink="/tasks/new">Yeni Bir Görev Oluştur</button>
+  </div>
+
+  <div class="task-list" *ngIf="tasks().length > 0" [class.is-filtering]="loading()">
+    <div class="task-list-header">
+      <div class="col-title">Görev Adı</div>
+      <div class="col-category">Kategori</div>
+      <div class="col-priority">Öncelik</div>
+      <div class="col-status">Durum</div>
+      <div class="col-date">Bitiş Tarihi</div>
+    </div>
+
+    <div class="task-row" *ngFor="let task of tasks()" [routerLink]="['/tasks', task.id]">
+      <div class="col-title">
+        <span class="task-name">{{ task.title }}</span>
+        <span class="task-desc" *ngIf="task.description">{{ task.description | slice:0:60 }}{{ task.description.length > 60 ? '...' : '' }}</span>
+      </div>
+      <div class="col-category">
+        <span class="category-badge" *ngIf="task.categoryName" [ngStyle]="{'background-color': getCategoryColor(task.categoryId) + '22', 'color': getCategoryColor(task.categoryId), 'border': '1px solid ' + getCategoryColor(task.categoryId) + '55'}">{{ task.categoryName }}</span>
+        <span class="no-category" *ngIf="!task.categoryName">-</span>
+      </div>
+      <div class="col-priority">
+        <span class="priority-badge" [ngClass]="getPriorityColorClass(task.priority)">
+          {{ getPriorityLabel(task.priority) }}
+        </span>
+      </div>
+      <div class="col-status">
+        <span class="status-badge" [ngClass]="getStatusColorClass(task.status)">
+          {{ getStatusLabel(task.status) }}
+        </span>
+      </div>
+      <div class="col-date">
+        <span class="date-text" *ngIf="task.dueDate">
+          <mat-icon class="date-icon">event</mat-icon>
+          {{ task.dueDate | date:'dd MMM yyyy' }}
+        </span>
+        <span class="no-date" *ngIf="!task.dueDate">-</span>
+      </div>
+    </div>
+  </div>
+</div>

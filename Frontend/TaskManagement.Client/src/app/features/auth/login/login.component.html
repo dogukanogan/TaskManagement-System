@@ -1,0 +1,51 @@
+<div class="auth-layout">
+  <button class="theme-toggle" (click)="themeService.toggleTheme()" [attr.aria-label]="themeService.isDarkMode() ? 'Açık Tema' : 'Koyu Tema'">
+    <!-- Sun icon for dark mode (to switch to light), Moon icon for light mode (to switch to dark) -->
+    <svg *ngIf="themeService.isDarkMode()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+    <svg *ngIf="!themeService.isDarkMode()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  </button>
+  <div class="auth-main">
+    <div class="auth-card-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Giriş Yap</h1>
+          <p>Task Management System'e Hoş Geldiniz</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+          <div class="form-group">
+            <input 
+              type="email" 
+              name="email" 
+              [(ngModel)]="credentials.email" 
+              placeholder="E-posta*" 
+              autocomplete="username" 
+              required
+              class="custom-input">
+          </div>
+
+          <div class="form-group">
+            <input 
+              type="password" 
+              name="password" 
+              [(ngModel)]="credentials.password" 
+              placeholder="Şifre*" 
+              autocomplete="current-password" 
+              required
+              class="custom-input">
+          </div>
+
+          <button type="submit" [disabled]="loading() || !loginForm.valid" class="custom-submit-btn">
+            <span *ngIf="!loading()">Giriş Yap</span>
+            <div class="spinner-border" *ngIf="loading()"></div>
+          </button>
+          
+          <div class="redirect-link">
+            <span>Hesabın yok mu? </span>
+            <a routerLink="/register">Kayıt Ol</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

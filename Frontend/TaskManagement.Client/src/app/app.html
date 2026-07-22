@@ -1,0 +1,55 @@
+<div class="app-layout" *ngIf="authService.isLoggedIn()">
+  <aside class="sidebar">
+    <div class="sidebar-header" routerLink="/dashboard">
+      <div class="logo-box">
+        <mat-icon>task_alt</mat-icon>
+      </div>
+      <span class="brand">TaskManagement</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <mat-icon>space_dashboard</mat-icon> Dashboard
+      </a>
+      <a routerLink="/tasks" routerLinkActive="active" class="nav-item">
+        <mat-icon>format_list_bulleted</mat-icon> Görevler
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-profile" *ngIf="authService.currentUserSignal() as user" [matMenuTriggerFor]="userMenu">
+        <div class="avatar">{{ user.firstName[0] }}{{ user.lastName[0] }}</div>
+        <div class="user-info">
+          <span class="name">{{ user.firstName }} {{ user.lastName }}</span>
+          <span class="email">{{ user.email }}</span>
+        </div>
+        <mat-icon class="more-icon">more_vert</mat-icon>
+      </div>
+
+      <mat-menu #userMenu="matMenu" xPosition="after">
+        <button mat-menu-item (click)="themeService.toggleTheme()">
+          <mat-icon>{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          <span>{{ themeService.isDarkMode() ? 'Açık Tema' : 'Koyu Tema' }}</span>
+        </button>
+        <button mat-menu-item routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Ayarlar</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()" class="logout-menu-item">
+          <mat-icon color="warn">logout</mat-icon>
+          <span class="warn-text">Çıkış Yap</span>
+        </button>
+      </mat-menu>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- Auth Layout (No Sidebar) -->
+<div class="auth-layout" *ngIf="!authService.isLoggedIn()">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,162 @@
+<div class="detail-container">
+
+    <div *ngIf="loading()" class="loading-state">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <ng-container *ngIf="!loading() && task() as currentTask">
+
+        <div class="header-row">
+            <button mat-stroked-button routerLink="/tasks" type="button" class="back-btn">
+                <mat-icon>arrow_back</mat-icon> Görevlere Dön
+            </button>
+        </div>
+
+        <div class="layout-grid">
+            <!-- Left Column: Main Content & Comments -->
+            <div class="main-column">
+                
+                <mat-card class="task-card">
+                    <mat-card-header class="task-card-header">
+                        <mat-card-title>{{ currentTask.title }}</mat-card-title>
+                        <button mat-flat-button color="primary" [routerLink]="['/tasks/edit', currentTask.id]" class="edit-btn">
+                            <mat-icon>edit</mat-icon> Görevi Düzenle
+                        </button>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p class="description">{{ currentTask.description || 'Bu görev için açıklama girilmemiş.' }}</p>
+                    </mat-card-content>
+
+                </mat-card>
+
+                <!-- Yorumlar Kartı -->
+                <mat-card class="comments-card">
+                    <mat-card-header>
+                        <mat-card-title>Yorumlar ({{ comments().length }})</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="comments-list" *ngIf="comments().length > 0">
+                            <div class="comment-item" *ngFor="let comment of comments()">
+                                <div class="comment-header">
+                                    <span class="comment-author">{{ comment.username || 'Kullanıcı' }}</span>
+                                    <span class="comment-date">{{ comment.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                                </div>
+                                <p class="comment-text">{{ comment.comment }}</p>
+                            </div>
+                        </div>
+
+                        <p class="no-comments" *ngIf="comments().length === 0">Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
+
+                        <div class="add-comment-section">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Yorum Yaz</mat-label>
+                                <textarea matInput [(ngModel)]="newCommentText" rows="3"
+                                    placeholder="Görevin gidişatı hakkında bir şeyler yazın..."></textarea>
+                            </mat-form-field>
+                            <div class="comment-actions">
+                                <button mat-flat-button color="primary" [disabled]="!newCommentText() || submittingComment()" (click)="addComment()">
+                                    <span *ngIf="!submittingComment()">Yorum Gönder</span>
+                                    <mat-spinner *ngIf="submittingComment()" diameter="20" class="btn-spinner"></mat-spinner>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+            </div>
+
+            <!-- Right Column: Meta Info & Attachments -->
+            <div class="side-column">
+                
+                <!-- Properties -->
+                <mat-card class="meta-card">
+                    <mat-card-header>
+                        <mat-card-title>Özellikler</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="meta-item">
+                            <span class="meta-label">Durum</span>
+                            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="status-select-field">
+                                <mat-select [value]="currentTask.status" (selectionChange)="updateStatus($event.value)">
+                                    <mat-option [value]="0">Bekliyor</mat-option>
+                                    <mat-option [value]="1">Devam Ediyor</mat-option>
+                                    <mat-option [value]="2">Tamamlandı</mat-option>
+                                    <mat-option [value]="3">İptal Edildi</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <span class="meta-label">Öncelik</span>
+                            <div>
+                                <span class="priority-box" [ngClass]="getPriorityColorClass(currentTask.priority)">
+                                    {{ getPriorityLabel(currentTask.priority) }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="meta-item" *ngIf="currentTask.categoryName">
+                            <span class="meta-label">Kategori</span>
+                            <div style="font-weight: 500; color: var(--text-primary)">
+                                {{ currentTask.categoryName }}
+                            </div>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <span class="meta-label">Bitiş Tarihi</span>
+                            <span class="date-display">
+                                <mat-icon style="margin-right: 8px; color: var(--text-secondary)">event</mat-icon>
+                                {{ currentTask.dueDate ? formatDateTR(currentTask.dueDate) : 'Belirtilmemiş' }}
+                            </span>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Attachments -->
+                <mat-card class="attachments-card">
+                    <mat-card-header>
+                        <mat-card-title>Dosya Ekleri ({{ attachments().length }})</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="attachments-list" *ngIf="attachments().length > 0">
+                            <div class="attachment-item" *ngFor="let file of attachments()">
+                                <span class="file-name">{{ file.fileName }}</span>
+                                <div class="file-actions">
+                                    <button mat-icon-button color="primary" (click)="downloadAttachment(file.id, file.fileName)" title="İndir">
+                                        <mat-icon>download</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" (click)="deleteAttachment(file.id)" title="Sil">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="no-attachments" *ngIf="attachments().length === 0" style="color: var(--text-secondary); margin-bottom: 16px;">
+                            Bu göreve henüz dosya eklenmemiş.
+                        </p>
+                        <div class="upload-section">
+                            <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt,.xlsx">
+                            <button mat-stroked-button color="primary" (click)="fileInput.click()" [disabled]="uploading()" style="width: 100%">
+                                <span *ngIf="!uploading()">+ Dosya Yükle</span>
+                                <mat-spinner *ngIf="uploading()" diameter="20" class="btn-spinner"></mat-spinner>
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Danger Zone -->
+                <div class="danger-zone">
+                    <div class="danger-header">
+                        <h3>Görevi Sil</h3>
+                        <p>Bu işlem geri alınamaz. Görev ve ilişkili tüm yorum/dosyalar silinecektir.</p>
+                    </div>
+                    <button mat-flat-button class="delete-btn" (click)="deleteTask()" style="width: 100%">
+                        <mat-icon>delete_forever</mat-icon> Görevi Kalıcı Olarak Sil
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </ng-container>
+</div>

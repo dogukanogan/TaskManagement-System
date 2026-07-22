@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Kategoriyi Düzenle' : 'Yeni Kategori Ekle' }}</h2>
+<mat-dialog-content class="dialog-content">
+  <div class="form-container">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Kategori Adı</mat-label>
+      <input matInput [(ngModel)]="categoryData.name" name="name" required placeholder="Örn: İş, Ev, Spor..." autocomplete="off">
+      <mat-error>Kategori adı zorunludur</mat-error>
+    </mat-form-field>
+    
+    <div class="color-picker-container">
+      <label for="colorPicker" class="color-label">Renk Seçimi:</label>
+      <div class="color-input-wrapper">
+        <input type="color" id="colorPicker" [(ngModel)]="categoryData.color" name="color" class="color-picker" title="Kategori rengi seçin">
+        <span class="color-hex">{{ categoryData.color }}</span>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="onCancel()" class="cancel-btn">İptal</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!categoryData.name" class="save-btn">
+    {{ isEditMode ? 'Kaydet' : 'Ekle' }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,308 @@
+.detail-container {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-row {
+    margin-bottom: 24px;
+}
+
+.back-btn {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    height: 40px;
+}
+
+/* Split Layout */
+.layout-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Left Column */
+.main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Right Column */
+.side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Cards General */
+.task-card,
+.attachments-card,
+.comments-card,
+.meta-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+mat-card-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+:host-context(.dark-theme) mat-card-header {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+mat-card-title {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary);
+}
+
+mat-card-content {
+    padding: 24px !important;
+}
+
+/* Task Description */
+.description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Meta Data Items */
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.meta-item:last-child {
+    margin-bottom: 0;
+}
+
+.meta-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.date-display {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+}
+
+/* Status Select */
+::ng-deep .status-select-field .mdc-text-field--outlined {
+    border-radius: var(--radius-sm);
+}
+
+/* Priority & Status Colors */
+.priority-box {
+    display: inline-flex;
+    padding: 6px 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.priority-low { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.priority-normal { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+.priority-high { background-color: #ffe0b2; color: #e65100; border: 1px solid #ffcc80; }
+.priority-urgent { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+.priority-critical { background-color: #d32f2f; color: white; border: 1px solid #b71c1c; box-shadow: 0 2px 6px rgba(211, 47, 47, 0.3); }
+
+:host-context(.dark-theme) .priority-low { background-color: rgba(46, 125, 50, 0.2); color: #81c784; border-color: rgba(46, 125, 50, 0.4); }
+:host-context(.dark-theme) .priority-normal { background-color: rgba(21, 101, 192, 0.2); color: #64b5f6; border-color: rgba(21, 101, 192, 0.4); }
+:host-context(.dark-theme) .priority-high { background-color: rgba(230, 81, 0, 0.2); color: #ffb74d; border-color: rgba(230, 81, 0, 0.4); }
+:host-context(.dark-theme) .priority-urgent { background-color: rgba(198, 40, 40, 0.2); color: #e57373; border-color: rgba(198, 40, 40, 0.4); }
+:host-context(.dark-theme) .priority-critical { background-color: rgba(211, 47, 47, 0.8); color: #ffffff; border-color: #d32f2f; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); }
+
+/* Edit Button */
+.edit-actions {
+    padding: 16px 24px;
+    background-color: rgba(0, 0, 0, 0.01);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-btn {
+    height: 40px;
+}
+
+/* Attachments */
+.attachment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+}
+
+.attachment-item:hover {
+    border-color: var(--text-secondary);
+}
+
+.file-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+}
+
+.file-name::before {
+    content: "description";
+    font-family: 'Material Icons';
+    margin-right: 8px;
+    color: var(--text-secondary);
+}
+
+.upload-section {
+    margin-top: 16px;
+}
+
+/* Comments */
+.comment-item {
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    background-color: var(--bg-color);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.comment-text {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.add-comment-section {
+    margin-top: 24px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Danger Zone */
+.danger-zone {
+    margin-top: 32px;
+    padding: 24px;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: var(--radius-lg);
+    background-color: rgba(244, 67, 54, 0.02);
+}
+
+.danger-header {
+    margin-bottom: 16px;
+}
+
+.danger-header h3 {
+    color: var(--danger-text);
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.danger-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.delete-btn {
+    background-color: #f44336 !important;
+    color: white !important;
+    font-weight: 600;
+}
+
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-sizing: border-box;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.task-card-header mat-card-title {
+    flex: 1;
+}
+
+@media (max-width: 900px) {
+    .layout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+.edit-actions {
+    display: none;
+}
+mat-card-title {
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.file-name {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 8px;
+}
+
+@media (max-width: 600px) {
+    .detail-container {
+        padding: 16px;
+    }
+    .task-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .edit-btn {
+        width: 100%;
+        margin-top: 12px;
+    }
+}

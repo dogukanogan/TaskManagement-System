@@ -1,0 +1,81 @@
+.task-form-container {
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-column {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-column h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.back-btn {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  height: 40px;
+}
+
+.form-card {
+  padding: 8px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.actions button {
+  height: 48px;
+  padding: 0 32px;
+  font-size: 1rem;
+}
+
+.btn-spinner {
+  margin-right: 8px;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+/* Category Add Option */
+.add-category-option {
+  font-weight: 600;
+  color: var(--primary-color) !important;
+  background-color: rgba(0,0,0,0.02);
+}
+:host-context(.dark-theme) .add-category-option {
+  background-color: rgba(255,255,255,0.02);
+}
+
+.add-text {
+  margin-left: 8px;
+}
