@@ -249,28 +249,3 @@ mat-card-content {
   height: 48px;
   margin-bottom: 16px;
 }
-
-/* Priority Badges */
-.priority-badge, .category-badge {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-}
-
-.priority-low { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-.priority-normal { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-.priority-high { background-color: #ffe0b2; color: #e65100; border: 1px solid #ffcc80; }
-.priority-urgent { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
-.priority-critical { background-color: #d32f2f; color: white; border: 1px solid #b71c1c; box-shadow: 0 2px 6px rgba(211, 47, 47, 0.3); }
-
-:host-context(.dark-theme) .priority-low { background-color: rgba(46, 125, 50, 0.2); color: #81c784; border-color: rgba(46, 125, 50, 0.4); }
-:host-context(.dark-theme) .priority-normal { background-color: rgba(21, 101, 192, 0.2); color: #64b5f6; border-color: rgba(21, 101, 192, 0.4); }
-:host-context(.dark-theme) .priority-high { background-color: rgba(230, 81, 0, 0.2); color: #ffb74d; border-color: rgba(230, 81, 0, 0.4); }
-:host-context(.dark-theme) .priority-urgent { background-color: rgba(198, 40, 40, 0.2); color: #e57373; border-color: rgba(198, 40, 40, 0.4); }
-:host-context(.dark-theme) .priority-critical { background-color: rgba(211, 47, 47, 0.8); color: #ffffff; border-color: #d32f2f; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); }

@@ -44,6 +44,7 @@ export class TaskListComponent implements OnInit {
   loading = signal(false);
 
   filter: TaskFilter = {};
+  skeletonArray = [1, 2, 3, 4, 5];
   
   Priority = Priority;
   TaskStatus = TaskStatus;

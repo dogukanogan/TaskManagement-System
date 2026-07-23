@@ -43,9 +43,24 @@
     </div>
   </div>
 
-  <div *ngIf="loading() && tasks().length === 0" class="loading-state">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Görevler yükleniyor...</p>
+  <div *ngIf="loading() && tasks().length === 0" class="task-list skeleton-container">
+    <div class="task-list-header">
+      <div class="col-title">Görev Adı</div>
+      <div class="col-category">Kategori</div>
+      <div class="col-priority">Öncelik</div>
+      <div class="col-status">Durum</div>
+      <div class="col-date">Bitiş Tarihi</div>
+    </div>
+    <div class="task-row skeleton-row" *ngFor="let item of skeletonArray">
+      <div class="col-title">
+        <div class="skeleton-box skeleton-title"></div>
+        <div class="skeleton-box skeleton-desc"></div>
+      </div>
+      <div class="col-category"><div class="skeleton-box skeleton-badge"></div></div>
+      <div class="col-priority"><div class="skeleton-box skeleton-badge"></div></div>
+      <div class="col-status"><div class="skeleton-box skeleton-badge"></div></div>
+      <div class="col-date"><div class="skeleton-box skeleton-date"></div></div>
+    </div>
   </div>
 
   <div *ngIf="!loading() && tasks().length === 0" class="empty-state">

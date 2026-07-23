@@ -149,3 +149,38 @@ a {
   animation: pageFadeSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
 }
+
+/* Standardized Badges (Priority, Category, Status) */
+.priority-badge, .status-badge, .category-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 100px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Priority Colors */
+.priority-low { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.priority-normal { background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+.priority-high { background-color: #ffe0b2; color: #e65100; border: 1px solid #ffcc80; }
+.priority-urgent { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+.priority-critical { background-color: #d32f2f; color: white; border: 1px solid #b71c1c; box-shadow: 0 2px 6px rgba(211, 47, 47, 0.3); }
+
+body.dark-theme .priority-low { background-color: rgba(46, 125, 50, 0.2); color: #81c784; border-color: rgba(46, 125, 50, 0.4); }
+body.dark-theme .priority-normal { background-color: rgba(21, 101, 192, 0.2); color: #64b5f6; border-color: rgba(21, 101, 192, 0.4); }
+body.dark-theme .priority-high { background-color: rgba(230, 81, 0, 0.2); color: #ffb74d; border-color: rgba(230, 81, 0, 0.4); }
+body.dark-theme .priority-urgent { background-color: rgba(198, 40, 40, 0.2); color: #e57373; border-color: rgba(198, 40, 40, 0.4); }
+body.dark-theme .priority-critical { background-color: rgba(211, 47, 47, 0.8); color: #ffffff; border-color: #d32f2f; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); }
+
+/* Status Colors */
+.status-todo { background-color: rgba(158, 158, 158, 0.1); color: #9e9e9e; }
+.status-inprogress { background-color: rgba(33, 150, 243, 0.1); color: #2196f3; }
+.status-inreview { background-color: rgba(156, 39, 176, 0.1); color: #9c27b0; }
+.status-completed { background-color: rgba(76, 175, 80, 0.1); color: #4caf50; }
+.status-cancelled { background-color: rgba(244, 67, 54, 0.1); color: #f44336; }
