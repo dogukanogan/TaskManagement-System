@@ -1,43 +1,21 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink, Router, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './core/services/auth.service';
-import { ThemeService } from './core/services/theme.service';
-import { User } from './core/models/user.model';
-
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
+import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     CommonModule, 
-    RouterOutlet, 
-    RouterLink,
-    RouterLinkActive,
-    MatToolbarModule, 
-    MatButtonModule, 
-    MatIconModule,
-    MatMenuModule,
-    MatDividerModule
+    RouterOutlet,
+    NavigationComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal('TaskManagement.Web');
-  public authService = inject(AuthService);
-  public themeService = inject(ThemeService);
-  private router = inject(Router);
-
-  ngOnInit() {}
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
+  readonly authService = inject(AuthService);
 }

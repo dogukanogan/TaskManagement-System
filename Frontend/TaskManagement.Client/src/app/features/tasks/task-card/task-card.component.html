@@ -1,0 +1,32 @@
+<div class="task-row" [routerLink]="['/tasks', task().id]">
+  <div class="col-title">
+    <span class="task-name">{{ task().title }}</span>
+    <span class="task-desc" *ngIf="task().description as description">
+      {{ description | slice:0:60 }}{{ description.length > 60 ? '...' : '' }}
+    </span>
+  </div>
+  <div class="col-category">
+    <span class="category-badge" *ngIf="task().categoryName"
+      [ngStyle]="{'background-color': categoryColor() + '22', 'color': categoryColor(), 'border': '1px solid ' + categoryColor() + '55'}">
+      {{ task().categoryName }}
+    </span>
+    <span class="no-category" *ngIf="!task().categoryName">-</span>
+  </div>
+  <div class="col-priority">
+    <span class="priority-badge" [ngClass]="getPriorityColorClass(task().priority)">
+      {{ getPriorityLabel(task().priority) }}
+    </span>
+  </div>
+  <div class="col-status">
+    <span class="status-badge" [ngClass]="getStatusColorClass(task().status)">
+      {{ getStatusLabel(task().status) }}
+    </span>
+  </div>
+  <div class="col-date">
+    <span class="date-text" *ngIf="task().dueDate">
+      <mat-icon class="date-icon">event</mat-icon>
+      {{ task().dueDate | date:'dd MMM yyyy' }}
+    </span>
+    <span class="no-date" *ngIf="!task().dueDate">-</span>
+  </div>
+</div>

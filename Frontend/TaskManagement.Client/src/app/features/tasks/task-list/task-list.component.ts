@@ -15,8 +15,7 @@ import { TaskService } from '../../../core/services/task.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { TaskItem, Priority, TaskStatus, TaskFilter } from '../../../core/models/task.model';
 import { Category } from '../../../core/models/category.model';
-import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { TaskCardComponent } from '../task-card/task-card.component';
 
 @Component({
   selector: 'app-task-list',
@@ -33,7 +32,8 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TaskCardComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
@@ -121,37 +121,6 @@ export class TaskListComponent implements OnInit {
   clearFilter(): void {
     this.filter = {};
     this.loadTasks();
-  }
-
-  getPriorityLabel(priority: number): string {
-    const labels: Record<number, string> = { 1: 'Düşük', 2: 'Normal', 3: 'Yüksek', 4: 'Acil', 5: 'Kritik' };
-    return labels[priority] || 'Bilinmiyor';
-  }
-
-  getStatusColorClass(status: number): string {
-    switch (status) {
-        case 0: return 'status-todo';
-        case 1: return 'status-inprogress';
-        case 2: return 'status-completed';
-        case 3: return 'status-cancelled';
-        default: return '';
-    }
-  }
-
-  getPriorityColorClass(priority: number): string {
-    switch (priority) {
-        case 1: return 'priority-low';
-        case 2: return 'priority-normal';
-        case 3: return 'priority-high';
-        case 4: return 'priority-urgent';
-        case 5: return 'priority-critical';
-        default: return '';
-    }
-  }
-
-  getStatusLabel(status: TaskStatus): string {
-    const found = this.statuses.find(s => s.value === status);
-    return found ? found.label : TaskStatus[status];
   }
 
   getCategoryColor(categoryId: string | undefined): string {
