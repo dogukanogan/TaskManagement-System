@@ -100,7 +100,10 @@ export class TaskDetailComponent implements OnInit {
     loadComments(taskId: string): void {
         this.commentService.getAll(taskId).subscribe({
             next: (data) => this.comments.set(data),
-            error: (err) => console.error('Yorumlar yüklenemedi:', err)
+            error: (err) => {
+                console.error('Yorumlar yüklenemedi:', err);
+                this.snackBar.open('Yorumlar yüklenemedi. Lütfen tekrar deneyin.', 'Kapat', { duration: 3000 });
+            }
         });
     }
 
@@ -138,7 +141,10 @@ export class TaskDetailComponent implements OnInit {
     loadAttachments(taskId: string): void {
         this.taskAttachmentService.getAll(taskId).subscribe({
             next: (data) => this.attachments.set(data),
-            error: (err) => console.error('Dosya ekleri yüklenirken hata oluştu:', err)
+            error: (err) => {
+                console.error('Dosya ekleri yüklenirken hata oluştu:', err);
+                this.snackBar.open('Dosya ekleri yüklenemedi. Lütfen tekrar deneyin.', 'Kapat', { duration: 3000 });
+            }
         });
     }
 
@@ -200,17 +206,29 @@ export class TaskDetailComponent implements OnInit {
         const currentTask = this.task();
         if (!currentTask) return;
 
-        if (!confirm('Bu dosyayı silmek istediğinize emin misiniz?')) return;
-
-        this.taskAttachmentService.delete(currentTask.id, attachmentId).subscribe({
-            next: () => {
-                this.snackBar.open('Dosya başarıyla silindi.', 'Kapat', { duration: 3000 });
-                this.loadAttachments(currentTask.id);
-            },
-            error: (err) => {
-                console.error('Dosya silinirken hata oluştu:', err);
-                this.snackBar.open('Dosya silinemedi.', 'Kapat', { duration: 3000 });
+        const dialogRef = this.dialog.open(ConfirmDialog, {
+            width: '400px',
+            data: {
+                title: 'Dosyayı Sil',
+                message: 'Bu dosyayı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.',
+                confirmText: 'Evet, Sil',
+                cancelText: 'Vazgeç'
             }
+        });
+
+        dialogRef.afterClosed().subscribe(confirmed => {
+            if (!confirmed) return;
+
+            this.taskAttachmentService.delete(currentTask.id, attachmentId).subscribe({
+                next: () => {
+                    this.snackBar.open('Dosya başarıyla silindi.', 'Kapat', { duration: 3000 });
+                    this.loadAttachments(currentTask.id);
+                },
+                error: (err) => {
+                    console.error('Dosya silinirken hata oluştu:', err);
+                    this.snackBar.open('Dosya silinemedi.', 'Kapat', { duration: 3000 });
+                }
+            });
         });
     }
 

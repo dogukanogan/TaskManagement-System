@@ -3,7 +3,7 @@
   <div class="form-container">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Kategori Adı</mat-label>
-      <input matInput [(ngModel)]="categoryData.name" name="name" required placeholder="Örn: İş, Ev, Spor..." autocomplete="off">
+      <input matInput [(ngModel)]="categoryData.name" name="name" required maxlength="100" placeholder="Örn: İş, Ev, Spor..." autocomplete="off">
       <mat-error>Kategori adı zorunludur</mat-error>
     </mat-form-field>
     
@@ -18,7 +18,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="dialog-actions">
   <button mat-button (click)="onCancel()" class="cancel-btn">İptal</button>
-  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!categoryData.name" class="save-btn">
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!categoryData.name.trim()" class="save-btn">
     {{ isEditMode ? 'Kaydet' : 'Ekle' }}
   </button>
 </mat-dialog-actions>

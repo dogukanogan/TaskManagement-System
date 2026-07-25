@@ -13,9 +13,16 @@
 
 .main-content {
   flex: 1;
+  min-width: 0;
   overflow-y: auto;
   background-color: var(--bg-color);
   position: relative;
+}
+
+@media (max-width: 900px) {
+  .app-layout {
+    height: 100dvh;
+  }
 }
 
 .auth-layout {

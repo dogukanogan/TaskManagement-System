@@ -61,7 +61,7 @@ export class LoginComponent {
       },
       error: (err) => {
         console.error('Giriş işlemi başarısız:', err);
-        this.snackBar.open('E-posta veya şifre hatalı.', 'Kapat', { duration: 3000 });
+        this.snackBar.open(err.error?.message || 'E-posta veya şifre hatalı.', 'Kapat', { duration: 3000 });
         this.loading.set(false);
       }
     });

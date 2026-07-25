@@ -63,14 +63,23 @@
     </div>
   </div>
 
-  <div *ngIf="!loading() && tasks().length === 0" class="empty-state">
+  <div *ngIf="!loading() && errorMessage()" class="error-state" role="alert">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h3>Görevler yüklenemedi</h3>
+    <p>{{ errorMessage() }}</p>
+    <button mat-stroked-button color="primary" (click)="loadTasks()">
+      <mat-icon>refresh</mat-icon> Tekrar Dene
+    </button>
+  </div>
+
+  <div *ngIf="!loading() && !errorMessage() && tasks().length === 0" class="empty-state">
     <mat-icon class="empty-icon">task</mat-icon>
     <h3>Görev Bulunamadı</h3>
     <p>Henüz hiç görevin yok veya aramana uygun görev bulunamadı.</p>
     <button mat-stroked-button color="primary" routerLink="/tasks/new">Yeni Bir Görev Oluştur</button>
   </div>
 
-  <div class="task-list" *ngIf="tasks().length > 0" [class.is-filtering]="loading()">
+  <div class="task-list" *ngIf="!errorMessage() && tasks().length > 0" [class.is-filtering]="loading()">
     <div class="task-list-header">
       <div class="col-title">Görev Adı</div>
       <div class="col-category">Kategori</div>

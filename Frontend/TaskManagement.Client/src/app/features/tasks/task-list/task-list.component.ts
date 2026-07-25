@@ -42,6 +42,7 @@ export class TaskListComponent implements OnInit {
   tasks = signal<TaskItem[]>([]);
   categories = signal<Category[]>([]);
   loading = signal(false);
+  errorMessage = signal<string | null>(null);
 
   filter: TaskFilter = {};
   skeletonArray = [1, 2, 3, 4, 5];
@@ -81,6 +82,7 @@ export class TaskListComponent implements OnInit {
 
   loadTasks(): void {
     this.loading.set(true);
+    this.errorMessage.set(null);
     this.taskService.getAll(this.filter).subscribe({
       next: (data) => {
         // İstemci tarafında sıralama: 
@@ -98,6 +100,7 @@ export class TaskListComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
+        this.errorMessage.set('Görevler yüklenemedi. Lütfen bağlantınızı kontrol edip tekrar deneyin.');
         this.loading.set(false);
       }
     });

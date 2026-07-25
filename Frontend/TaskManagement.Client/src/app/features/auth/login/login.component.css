@@ -181,3 +181,29 @@
 .theme-toggle:hover {
   background-color: var(--border-color);
 }
+.validation-error {
+  display: block;
+  color: var(--danger-text);
+  font-size: 0.78rem;
+  margin: 6px 4px 0;
+}
+
+@media (max-width: 600px) {
+  .auth-main {
+    padding: 72px 16px 24px;
+  }
+
+  .auth-card-wrapper,
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  .auth-header h1 {
+    font-size: 1.65rem;
+  }
+}

@@ -80,7 +80,11 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error('Kayıt işlemi başarısız:', err);
-        this.snackBar.open('Kayıt oluşturulamadı. Lütfen bilgilerinizi kontrol edin.', 'Kapat', { duration: 3000 });
+        this.snackBar.open(
+          err.error?.message || 'Kayıt oluşturulamadı. Lütfen bilgilerinizi kontrol edin.',
+          'Kapat',
+          { duration: 3000 }
+        );
         this.loading.set(false);
       }
     });

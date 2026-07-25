@@ -66,6 +66,34 @@
   padding: 48px 0;
 }
 
+@media (max-width: 700px) {
+  .task-form-container {
+    padding: 20px 16px;
+  }
+
+  .header-column {
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .half-width {
+    width: 100%;
+  }
+
+  .form-card {
+    padding: 0;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}
+
 /* Category Add Option */
 .add-category-option {
   font-weight: 600;

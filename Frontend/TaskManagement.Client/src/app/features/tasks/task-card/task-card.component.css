@@ -41,7 +41,7 @@
 
 .col-category {
   flex: 1;
-  min-width: 120px;
+  min-width: 140px;
   padding: 16px;
   border-right: 1px solid var(--border-color);
   display: flex;
@@ -51,7 +51,7 @@
 
 .col-priority {
   flex: 1;
-  min-width: 100px;
+  min-width: 140px;
   padding: 16px;
   border-right: 1px solid var(--border-color);
   display: flex;
@@ -61,7 +61,7 @@
 
 .col-status {
   flex: 1;
-  min-width: 120px;
+  min-width: 140px;
   padding: 16px;
   border-right: 1px solid var(--border-color);
   display: flex;
@@ -115,6 +115,20 @@
   height: 16px;
   margin-right: 6px;
   opacity: 0.7;
+}
+
+.category-badge,
+.priority-badge,
+.status-badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  min-height: 28px;
+  padding: 4px 10px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 @media (max-width: 900px) {

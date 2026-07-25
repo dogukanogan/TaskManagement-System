@@ -176,6 +176,47 @@ mat-card-content {
   flex: 1;
 }
 
+@media (max-width: 700px) {
+  .dashboard-container {
+    padding: 20px 16px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-size: 1.65rem;
+  }
+
+  .stats-grid,
+  .details-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  mat-card-header {
+    padding: 16px 18px;
+  }
+
+  mat-card-content {
+    padding: 18px !important;
+  }
+
+  .progress-wrapper {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .custom-progress {
+    width: 100%;
+  }
+}
+
 .progress-desc {
   color: var(--text-secondary);
   font-size: 0.9rem;

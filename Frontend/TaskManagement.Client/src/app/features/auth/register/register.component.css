@@ -226,3 +226,9 @@
     gap: 16px;
   }
 }
+.validation-error {
+  display: block;
+  color: var(--danger-text);
+  font-size: 0.78rem;
+  margin: 6px 4px 0;
+}

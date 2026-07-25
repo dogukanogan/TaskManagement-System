@@ -15,12 +15,14 @@
         <form (ngSubmit)="updateProfile()" #profileForm="ngForm" class="settings-form">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Adınız</mat-label>
-            <input matInput [(ngModel)]="profileData.firstName" name="firstName" required>
+            <input matInput [(ngModel)]="profileData.firstName" name="firstName" required maxlength="50">
+            <mat-error>Ad alanı zorunludur.</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Soyadınız</mat-label>
-            <input matInput [(ngModel)]="profileData.lastName" name="lastName" required>
+            <input matInput [(ngModel)]="profileData.lastName" name="lastName" required maxlength="50">
+            <mat-error>Soyad alanı zorunludur.</mat-error>
           </mat-form-field>
 
           <div class="actions">
@@ -43,12 +45,14 @@
         <form (ngSubmit)="changePassword()" #passwordForm="ngForm" class="settings-form">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Mevcut Şifre</mat-label>
-            <input matInput type="password" [(ngModel)]="passwordData.currentPassword" name="currentPassword" required>
+            <input matInput type="password" [(ngModel)]="passwordData.currentPassword" name="currentPassword" required autocomplete="current-password">
+            <mat-error>Mevcut şifre zorunludur.</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Yeni Şifre</mat-label>
-            <input matInput type="password" [(ngModel)]="passwordData.newPassword" name="newPassword" required>
+            <input matInput type="password" [(ngModel)]="passwordData.newPassword" name="newPassword" required minlength="6" maxlength="100" autocomplete="new-password">
+            <mat-error>Yeni şifre en az 6 karakter olmalıdır.</mat-error>
           </mat-form-field>
 
           <div class="actions">

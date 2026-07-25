@@ -172,3 +172,60 @@
   color: var(--danger-text);
   font-weight: 500;
 }
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 76px;
+  }
+
+  .sidebar-header {
+    justify-content: center;
+    padding: 0 12px;
+  }
+
+  .logo-box {
+    margin-right: 0;
+  }
+
+  .brand,
+  .user-info,
+  .more-icon {
+    display: none;
+  }
+
+  .sidebar-nav {
+    padding: 20px 10px;
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: 12px;
+    font-size: 0;
+  }
+
+  .nav-item mat-icon {
+    margin-right: 0;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .sidebar-footer {
+    padding: 12px 10px;
+  }
+
+  .user-profile {
+    justify-content: center;
+    padding: 8px 0;
+  }
+
+  .avatar {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 64px;
+  }
+}
