@@ -23,10 +23,19 @@
     </span>
   </div>
   <div class="col-date">
-    <span class="date-text" *ngIf="task().dueDate">
-      <mat-icon class="date-icon">event</mat-icon>
-      {{ task().dueDate | date:'dd MMM yyyy' }}
+    <span class="date-text">
+      <mat-icon class="date-icon">add_circle_outline</mat-icon>
+      <span><strong>Oluşturuldu:</strong> {{ task().createdAt | date:'dd MMM yyyy' }}</span>
     </span>
-    <span class="no-date" *ngIf="!task().dueDate">-</span>
+    <span class="date-text" *ngIf="task().dueDate; else noDueDate">
+      <mat-icon class="date-icon">event</mat-icon>
+      <span><strong>Bitiş:</strong> {{ task().dueDate | date:'dd MMM yyyy' }}</span>
+    </span>
+    <ng-template #noDueDate>
+      <span class="date-text no-date">
+        <mat-icon class="date-icon">event_busy</mat-icon>
+        <span><strong>Bitiş:</strong> Belirtilmedi</span>
+      </span>
+    </ng-template>
   </div>
 </div>

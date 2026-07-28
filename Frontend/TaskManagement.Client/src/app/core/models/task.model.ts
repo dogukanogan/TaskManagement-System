@@ -50,4 +50,18 @@ export interface TaskFilter {
     searchTerm?: string;
     dueDateFrom?: string;
     dueDateTo?: string;
+    page?: number;
+    pageSize?: number;
+    sortBy?: 'CreatedAt' | 'Title' | 'DueDate' | 'Priority' | 'Status';
+    sortDirection?: 'asc' | 'desc';
+}
+
+export interface PagedResult<T> {
+    items: T[];
+    totalCount: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
 }

@@ -71,7 +71,10 @@
 
 .col-date {
   flex: 1;
-  min-width: 140px;
+  min-width: 185px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,6 +110,13 @@
   font-size: 0.85rem;
   color: var(--text-secondary);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.date-text strong {
+  color: var(--text-primary);
+  font-size: 0.76rem;
+  font-weight: 600;
 }
 
 .date-icon {

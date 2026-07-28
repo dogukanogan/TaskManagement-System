@@ -32,6 +32,9 @@ namespace TaskManagement.API.Services
 
         public async Task<PagedResult<TaskItemDto>> GetAllForUserAsync(Guid userId, TaskFilterDto filter)
         {
+            filter.Page = Math.Max(filter.Page, 1);
+            filter.PageSize = Math.Clamp(filter.PageSize, 1, 100);
+
             var query = _context.Tasks
                 .Include(t => t.Category)
                 .Where(t => t.UserId == userId)
@@ -52,15 +55,34 @@ namespace TaskManagement.API.Services
                     (t.Description != null && t.Description.Contains(filter.SearchTerm)));
 
             if (filter.DueDateFrom.HasValue)
-                query = query.Where(t => t.DueDate >= filter.DueDateFrom.Value);
+            {
+                var dueDateFrom = filter.DueDateFrom.Value.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(filter.DueDateFrom.Value, DateTimeKind.Utc)
+                    : filter.DueDateFrom.Value.ToUniversalTime();
+                query = query.Where(t => t.DueDate >= dueDateFrom);
+            }
 
             if (filter.DueDateTo.HasValue)
-                query = query.Where(t => t.DueDate <= filter.DueDateTo.Value);
+            {
+                var dueDateTo = filter.DueDateTo.Value.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(filter.DueDateTo.Value, DateTimeKind.Utc)
+                    : filter.DueDateTo.Value.ToUniversalTime();
+                query = query.Where(t => t.DueDate <= dueDateTo);
+            }
 
             var totalCount = await query.CountAsync();
 
+            var descending = filter.SortDirection.Equals("desc", StringComparison.OrdinalIgnoreCase);
+            query = filter.SortBy.ToLowerInvariant() switch
+            {
+                "title" => descending ? query.OrderByDescending(t => t.Title) : query.OrderBy(t => t.Title),
+                "duedate" => descending ? query.OrderByDescending(t => t.DueDate) : query.OrderBy(t => t.DueDate),
+                "priority" => descending ? query.OrderByDescending(t => t.Priority) : query.OrderBy(t => t.Priority),
+                "status" => descending ? query.OrderByDescending(t => t.Status) : query.OrderBy(t => t.Status),
+                _ => descending ? query.OrderByDescending(t => t.CreatedAt) : query.OrderBy(t => t.CreatedAt)
+            };
+
             var tasks = await query
-                .OrderByDescending(t => t.CreatedAt)
                 .Skip((filter.Page - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
@@ -152,6 +174,8 @@ namespace TaskManagement.API.Services
                 task.Status = dto.Status.Value;
                 if (dto.Status.Value == TaskItemStatus.Completed && task.CompletedAt == null)
                     task.CompletedAt = DateTime.UtcNow;
+                else if (dto.Status.Value != TaskItemStatus.Completed)
+                    task.CompletedAt = null;
             }
 
             if (dto.DueDate.HasValue)
