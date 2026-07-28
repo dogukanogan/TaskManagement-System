@@ -1,64 +1,180 @@
 # Task Management System
 
-Bu proje, kullanıcıların günlük işlerini, projelerini ve hedeflerini organize etmelerine yardımcı olan, modern UI/UX prensipleriyle geliştirilmiş **Kişisel Görev Yönetim Sistemi** web uygulamasıdır. 
+Modern, responsive ve tam kapsamlı bir kişisel görev yönetimi uygulaması. Görevlerinizi oluşturabilir, kategorilere ayırabilir, liste veya Kanban görünümünde yönetebilir ve dashboard üzerinden çalışma durumunuzu takip edebilirsiniz.
 
 **Geliştirici:** Doğukan Ogan
 
----
+## Özellikler
 
-## 🌟 Öne Çıkan Özellikler
+### Görev yönetimi
 
-- **Modern ve Premium Arayüz:** Angular Material ile zenginleştirilmiş, akıcı animasyonlara sahip pürüzsüz kullanıcı deneyimi.
-- **Karanlık Mod (Dark Mode):** Göz yormayan, kontrast ayarları özenle yapılmış entegre karanlık mod desteği. Tema tercihiniz tarayıcınızda hatırlanır.
-- **Gelişmiş Görev Filtreleme:** Görevleri kategori, durum (Bekliyor, Tamamlandı vs.), öncelik (Kritik, Normal vs.) ve metin bazlı anlık olarak filtreleyebilme.
-- **Dinamik Kategoriler:** Özelleştirilebilir "renk paleti" ile görev kategorilerini kişiselleştirme. Her kategori, seçilen renkte özel rozetler (badge) halinde tüm ekranlarda dinamik olarak gösterilir.
-- **Detaylı Dashboard:** Görevlerin önceliklerine, kategorilerine ve durumlarına göre genel istatistiklerini anlık olarak takip edebileceğiniz özet ekranı.
-- **Güvenli Kimlik Doğrulama:** JWT (JSON Web Token) altyapısı ile güvenli giriş, kayıt ve profil yönetimi işlemleri.
+- Görev oluşturma, düzenleme, görüntüleme ve silme
+- Durum, öncelik, kategori ve tarih aralığına göre filtreleme
+- Başlık ve açıklama içinde gecikmeli arama
+- Farklı alanlara göre artan veya azalan sıralama
+- Sayfalama ile büyük görev listelerini yönetme
+- Liste ve Kanban görünümleri arasında geçiş
+- Kanban üzerinde sürükle-bırak ile görev durumunu değiştirme
+- Görevlere yorum ve dosya eki ekleme
+- İşlem öncesi onay pencereleri, form doğrulamaları ve kullanıcı bildirimleri
 
----
+### Dashboard
 
-## 🛠 Kullanılan Teknolojiler
+- Toplam, bekleyen, devam eden, tamamlanan, iptal edilen ve gecikmiş görev özetleri
+- Haftalık, aylık veya tüm zamanlara göre istatistik filtresi
+- Tamamlanma oranı
+- Öncelik ve kategori dağılımları
+- Yaklaşan, gecikmiş ve son eklenen görevler
+- Oluşturulan ve tamamlanan görevleri karşılaştıran performans grafiği
 
-**Backend (API)**
-- **Framework:** .NET 8 Web API
-- **ORM:** Entity Framework Core
-- **Ana Veritabanı:** PostgreSQL
-- **Alternatif Veritabanı:** Oracle
-- **Güvenlik:** JWT tabanlı Authentication ve Authorization
+### Kullanıcı deneyimi ve optimizasyon
 
-**Frontend (Client)**
-- **Framework:** Angular 17+
-- **UI Kütüphanesi:** Angular Material
-- **Stil Yönetimi:** Saf CSS, Modern CSS Variable yapısı ve Responsive Tasarım
+- Mobil, tablet ve masaüstüne uyumlu responsive tasarım
+- Dark/Light tema desteği ve tema tercihinin `localStorage` üzerinde saklanması
+- Loading, hata, başarı ve boş durum gösterimleri
+- JWT tabanlı kimlik doğrulama ve korumalı sayfalar
+- API istekleri için süreli önbellekleme ve veri değişikliklerinde cache invalidation
+- `OnPush` change detection ve güvenli subscription yönetimi
+- API ve sayfa performansı ölçümü
+- Profil bilgileri ve parola yönetimi
 
----
+## Teknolojiler
 
-## 📂 Proje Yapısı
+| Katman | Teknolojiler |
+| --- | --- |
+| Frontend | Angular 21, Angular Material 21, Angular CDK, RxJS, TypeScript |
+| Backend | ASP.NET Core 8 Web API, Entity Framework Core 8, AutoMapper |
+| Veritabanı | PostgreSQL (varsayılan), Oracle desteği |
+| Güvenlik | JWT Bearer Authentication, BCrypt |
+| Test | Vitest, Angular TestBed |
+| API dokümantasyonu | Swagger / OpenAPI |
 
-- `Backend/` - .NET 8 Web API projesini, servis katmanlarını, Repository modellerini ve Entity tanımlamalarını içerir.
-- `Frontend/TaskManagement.Client/` - Standalone Component mimarisi kullanılarak geliştirilmiş, Angular 17 tabanlı modern kullanıcı arayüzü kodlarını barındırır.
-- `Database/` - Referans amaçlı SQL şema ve örnek veri betiklerini barındırır.
+## Proje yapısı
 
----
+```text
+TaskManagement-System/
+├── Backend/
+│   └── TaskManagement.API/
+│       ├── Controllers/     # API endpoint'leri
+│       ├── DTOs/            # İstek ve yanıt modelleri
+│       ├── Data/            # DbContext
+│       ├── Middleware/      # Merkezi hata yönetimi
+│       ├── Migrations/      # EF Core migration'ları
+│       ├── Models/          # Veritabanı varlıkları
+│       └── Services/        # İş kuralları ve servisler
+├── Frontend/
+│   └── TaskManagement.Client/
+│       └── src/app/
+│           ├── core/        # Guard, interceptor, model ve servisler
+│           ├── features/    # Dashboard, görev, auth ve ayarlar
+│           └── shared/      # Ortak component'ler
+└── Database/                # SQL şema ve örnek veri dosyaları
+```
 
-## 🚀 Kurulum ve Çalıştırma
+## Gereksinimler
 
-### Backend (.NET API)
-1. `Backend/` dizinine gidin.
-2. Şifrelerinizi koddan uzak tutmak için **.NET User Secrets** kullanın:
-   ```bash
-   dotnet user-secrets init
-   dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=db;Username=usr;Password=şifreniz"
-   dotnet user-secrets set "Jwt:Secret" "gizli-jwt-anahtarınız"
-   ```
-3. Terminalde EF Core ile veritabanını oluşturun: `dotnet ef database update`
-4. Projeyi çalıştırın: `dotnet run` (API varsayılan olarak `https://localhost:7111` portunda ayağa kalkacaktır).
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- Angular 21 ile uyumlu bir Node.js LTS sürümü
+- npm
+- PostgreSQL
+- İsteğe bağlı: `dotnet-ef`
 
-### Frontend (Angular)
-1. `Frontend/TaskManagement.Client/` dizinine gidin.
-2. Bağımlılıkları yükleyin: `npm install`
-3. Geliştirici sunucusunu başlatın: `npm start` veya `npm run dev`
-4. Tarayıcınızda `http://localhost:4200` adresine giderek uygulamayı kullanmaya başlayabilirsiniz!
+```bash
+dotnet tool install --global dotnet-ef
+```
 
----
+## Kurulum
 
+### 1. Veritabanını hazırlayın
+
+PostgreSQL üzerinde bir veritabanı ve kullanıcı oluşturun. Ardından API dizinine geçin:
+
+```bash
+cd Backend/TaskManagement.API
+```
+
+Bağlantı bilgileri ile JWT anahtarını kaynak kod dışında tutmak için User Secrets kullanın:
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=taskmanagementdb;Username=taskadmin;Password=YOUR_PASSWORD"
+dotnet user-secrets set "Jwt:Secret" "YOUR_LONG_AND_SECURE_JWT_SECRET"
+```
+
+Migration'ları uygulayın:
+
+```bash
+dotnet ef database update
+```
+
+> API başlatılırken bekleyen migration'lar da otomatik olarak uygulanır.
+
+### 2. Backend'i çalıştırın
+
+```bash
+dotnet restore
+dotnet run
+```
+
+Geliştirme adresleri:
+
+- API: `http://localhost:5233`
+- Swagger: `http://localhost:5233/swagger`
+
+### 3. Frontend'i çalıştırın
+
+Yeni bir terminal açın:
+
+```bash
+cd Frontend/TaskManagement.Client
+npm install
+npm start
+```
+
+Uygulama `http://localhost:4200` adresinde açılır. Frontend API isteklerini varsayılan olarak `http://localhost:5233/api` adresine gönderir.
+
+## Kullanılabilir komutlar
+
+Frontend dizininde:
+
+```bash
+npm start                 # Geliştirme sunucusu
+npm run build             # Production build
+npm test -- --watch=false # Testleri bir kez çalıştır
+```
+
+Backend dizininde:
+
+```bash
+dotnet run
+dotnet build
+dotnet ef database update
+```
+
+## Demo hesabı
+
+Veritabanında demo kullanıcısı bulunmuyorsa API ilk açılışta aşağıdaki hesabı oluşturur:
+
+```text
+E-posta: demo@taskmanagement.com
+Parola: Demo123!
+```
+
+## Veritabanı sağlayıcısını değiştirme
+
+Varsayılan sağlayıcı PostgreSQL'dir. Oracle kullanmak için yapılandırmada sağlayıcıyı ve bağlantı bilgisini değiştirin:
+
+```json
+{
+  "DatabaseProvider": "Oracle",
+  "ConnectionStrings": {
+    "OracleConnection": "YOUR_ORACLE_CONNECTION_STRING"
+  }
+}
+```
+
+## Güvenlik notları
+
+- Gerçek veritabanı parolalarını ve JWT anahtarını `appsettings.json` içine yazmayın.
+- Geliştirme ortamında User Secrets, dağıtım ortamında environment variable veya güvenli bir secret manager kullanın.
+- Production ortamına geçmeden önce demo hesabını kaldırın veya parolasını değiştirin.
