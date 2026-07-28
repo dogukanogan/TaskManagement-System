@@ -45,6 +45,8 @@ namespace TaskManagement.API.DTOs.Task
         public string? SearchTerm { get; set; }
         public DateTime? DueDateFrom { get; set; }
         public DateTime? DueDateTo { get; set; }
+        public bool Overdue { get; set; }
+        public string? Period { get; set; }
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public string SortBy { get; set; } = "CreatedAt";

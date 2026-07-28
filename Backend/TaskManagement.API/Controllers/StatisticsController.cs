@@ -26,9 +26,9 @@ namespace TaskManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] string period = "all")
         {
-            var stats = await _statisticsService.GetStatisticsAsync(GetUserId());
+            var stats = await _statisticsService.GetStatisticsAsync(GetUserId(), period);
             return Ok(stats);
         }
     }

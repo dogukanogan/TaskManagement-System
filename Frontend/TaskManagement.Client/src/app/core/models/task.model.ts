@@ -50,6 +50,8 @@ export interface TaskFilter {
     searchTerm?: string;
     dueDateFrom?: string;
     dueDateTo?: string;
+    overdue?: boolean;
+    period?: 'week' | 'month' | 'all';
     page?: number;
     pageSize?: number;
     sortBy?: 'CreatedAt' | 'Title' | 'DueDate' | 'Priority' | 'Status';

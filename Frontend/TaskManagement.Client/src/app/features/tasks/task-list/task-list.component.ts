@@ -1,6 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Subject, debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CategoryService } from '../../../core/services/category.service';
 import { TaskService } from '../../../core/services/task.service';
 import { Category } from '../../../core/models/category.model';
@@ -32,7 +34,8 @@ type TaskViewMode = 'list' | 'board';
     TaskCardComponent
   ],
   templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css'
+  styleUrl: './task-list.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListComponent implements OnInit {
   tasks = signal<TaskItem[]>([]);
@@ -82,11 +85,27 @@ export class TaskListComponent implements OnInit {
   private readonly taskService = inject(TaskService);
   private readonly categoryService = inject(CategoryService);
   private readonly snackBar = inject(MatSnackBar);
-  private searchTimeout?: ReturnType<typeof setTimeout>;
+  private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly searchChanges = new Subject<void>();
 
   ngOnInit(): void {
+    this.searchChanges.pipe(
+      debounceTime(300),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => this.applyFilter());
+
     this.loadCategories();
-    this.loadTasks();
+    this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+      const status = params.get('status');
+      this.filter.status = status !== null ? Number(status) as TaskStatus : undefined;
+      this.filter.overdue = params.get('overdue') === 'true' || undefined;
+      const period = params.get('period');
+      this.filter.period = period === 'week' || period === 'month' ? period : undefined;
+      this.viewMode.set(params.get('view') === 'board' ? 'board' : 'list');
+      this.filter.page = 1;
+      this.loadTasks();
+    });
   }
 
   loadCategories(): void {
@@ -116,8 +135,7 @@ export class TaskListComponent implements OnInit {
   }
 
   onSearchChange(): void {
-    if (this.searchTimeout) clearTimeout(this.searchTimeout);
-    this.searchTimeout = setTimeout(() => this.applyFilter(), 300);
+    this.searchChanges.next();
   }
 
   applyFilter(): void {
@@ -175,6 +193,8 @@ export class TaskListComponent implements OnInit {
       this.filter.searchTerm ||
       this.filter.dueDateFrom ||
       this.filter.dueDateTo
+      || this.filter.overdue
+      || (this.filter.period && this.filter.period !== 'all')
     );
   }
 

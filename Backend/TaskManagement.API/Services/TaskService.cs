@@ -70,6 +70,30 @@ namespace TaskManagement.API.Services
                 query = query.Where(t => t.DueDate <= dueDateTo);
             }
 
+            if (filter.Overdue)
+            {
+                var now = DateTime.UtcNow;
+                query = query.Where(t =>
+                    t.DueDate.HasValue &&
+                    t.DueDate < now &&
+                    t.Status != TaskItemStatus.Completed &&
+                    t.Status != TaskItemStatus.Cancelled);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.Period))
+            {
+                var now = DateTime.UtcNow;
+                DateTime? periodStart = filter.Period.ToLowerInvariant() switch
+                {
+                    "week" => now.Date.AddDays(-(((int)now.DayOfWeek + 6) % 7)),
+                    "month" => new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc),
+                    _ => null
+                };
+
+                if (periodStart.HasValue)
+                    query = query.Where(t => t.CreatedAt >= periodStart.Value);
+            }
+
             var totalCount = await query.CountAsync();
 
             var descending = filter.SortDirection.Equals("desc", StringComparison.OrdinalIgnoreCase);

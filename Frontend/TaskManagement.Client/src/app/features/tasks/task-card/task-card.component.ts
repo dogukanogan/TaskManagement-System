@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,8 @@ import { TaskItem, TaskStatus } from '../../../core/models/task.model';
   standalone: true,
   imports: [CommonModule, RouterLink, MatIconModule],
   templateUrl: './task-card.component.html',
-  styleUrl: './task-card.component.css'
+  styleUrl: './task-card.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskCardComponent {
   readonly task = input.required<TaskItem>();

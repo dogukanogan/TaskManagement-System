@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -24,7 +24,8 @@ export interface CategoryDialogData {
     MatButtonModule
   ],
   templateUrl: './category-dialog.component.html',
-  styleUrl: './category-dialog.component.css'
+  styleUrl: './category-dialog.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryDialogComponent {
   isEditMode: boolean;

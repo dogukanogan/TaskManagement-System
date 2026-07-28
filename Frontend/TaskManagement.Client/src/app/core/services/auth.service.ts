@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models/user.model';
+import { ApiCacheService } from './api-cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
 
   public currentUserSignal = signal<User | null>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cache: ApiCacheService) {
     this.currentUserSignal.set(this.getCurrentUser());
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
     this.currentUserSignal.set(null);
+    this.cache.clear();
   }
 
   getToken(): string | null {
@@ -55,6 +57,7 @@ export class AuthService {
   }
 
   private storeSession(response: AuthResponse): void {
+    this.cache.clear();
     localStorage.setItem(this.tokenKey, response.token);
     localStorage.setItem(this.userKey, JSON.stringify(response.user));
     this.currentUserSignal.set(response.user);

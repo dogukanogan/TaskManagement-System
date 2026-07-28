@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -40,7 +40,8 @@ import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm
         MatDialogModule
     ],
     templateUrl: './task-detail.component.html',
-    styleUrl: './task-detail.component.css'
+    styleUrl: './task-detail.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskDetailComponent implements OnInit {
     private taskAttachmentService = inject(TaskAttachmentService);

@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -41,6 +42,7 @@ import { CategoryDialogComponent } from '../../categories/category-dialog/catego
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DatePipe]
 })
 export class TaskFormComponent implements OnInit {
@@ -51,6 +53,7 @@ export class TaskFormComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private datePipe = inject(DatePipe);
   private dialog = inject(MatDialog);
+  private destroyRef = inject(DestroyRef);
 
   categories = signal<Category[]>([]);
   loading = signal(false);
@@ -148,7 +151,7 @@ export class TaskFormComponent implements OnInit {
   }
 
   checkEditMode(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.isEditMode.set(true);

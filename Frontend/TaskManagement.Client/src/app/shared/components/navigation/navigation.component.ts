@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,8 @@ import { ThemeService } from '../../../core/services/theme.service';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, MatButtonModule, MatDividerModule, MatIconModule, MatMenuModule],
   templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.css'
+  styleUrl: './navigation.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent {
   readonly authService = inject(AuthService);
