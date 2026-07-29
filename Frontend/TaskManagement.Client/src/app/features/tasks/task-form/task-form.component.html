@@ -60,7 +60,7 @@
           <mat-label>Bitiş Tarihi (İsteğe Bağlı)</mat-label>
           <input matInput [matDatepicker]="picker" [(ngModel)]="taskData.dueDate" name="dueDate">
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker forceDatepickerBelow yPosition="below"></mat-datepicker>
         </mat-form-field>
 
         <div class="actions">

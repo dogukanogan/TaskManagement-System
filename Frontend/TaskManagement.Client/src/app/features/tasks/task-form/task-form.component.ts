@@ -20,6 +20,7 @@ import { TaskService } from '../../../core/services/task.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/category.model';
 import { CategoryDialogComponent } from '../../categories/category-dialog/category-dialog.component';
+import { ForceDatepickerBelowDirective } from '../../../shared/directives/force-datepicker-below.directive';
 
 @Component({
   selector: 'app-task-form',
@@ -38,7 +39,8 @@ import { CategoryDialogComponent } from '../../categories/category-dialog/catego
     MatDialogModule,
     MatDividerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    ForceDatepickerBelowDirective
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css',

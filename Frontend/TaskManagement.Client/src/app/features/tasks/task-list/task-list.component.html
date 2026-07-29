@@ -43,21 +43,37 @@
 
         <div class="date-range-filter" role="group" aria-label="Bitiş tarihi aralığı">
           <span class="date-range-title">Bitiş Tarihi Aralığı</span>
-          <label class="date-filter">
-            <span>En Erken</span>
-            <input type="date" [(ngModel)]="filter.dueDateFrom" (change)="applyFilter()" aria-label="En erken bitiş tarihi">
-          </label>
+          <mat-form-field appearance="outline" class="date-filter">
+            <mat-label>En Erken</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dueDateFromPicker"
+              [ngModel]="filterDueDateFrom"
+              (ngModelChange)="onFilterDateChange('dueDateFrom', $event)"
+              aria-label="En erken bitiş tarihi"
+            >
+            <mat-datepicker-toggle matIconSuffix [for]="dueDateFromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dueDateFromPicker forceDatepickerBelow yPosition="below"></mat-datepicker>
+          </mat-form-field>
 
-          <label class="date-filter">
-            <span>En Geç</span>
-            <input type="date" [(ngModel)]="filter.dueDateTo" (change)="applyFilter()" aria-label="En geç bitiş tarihi">
-          </label>
+          <mat-form-field appearance="outline" class="date-filter">
+            <mat-label>En Geç</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dueDateToPicker"
+              [ngModel]="filterDueDateTo"
+              (ngModelChange)="onFilterDateChange('dueDateTo', $event)"
+              aria-label="En geç bitiş tarihi"
+            >
+            <mat-datepicker-toggle matIconSuffix [for]="dueDateToPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dueDateToPicker forceDatepickerBelow yPosition="below"></mat-datepicker>
+          </mat-form-field>
         </div>
-      </div>
 
-      <button mat-stroked-button class="clear-btn" (click)="clearFilter()" *ngIf="hasActiveFilters()">
-        <mat-icon>close</mat-icon> Filtreleri Temizle
-      </button>
+        <button mat-stroked-button class="clear-btn" (click)="clearFilter()" *ngIf="hasActiveFilters()">
+          <mat-icon>close</mat-icon> Filtreleri Temizle
+        </button>
+      </div>
     </div>
 
     <div class="list-controls">

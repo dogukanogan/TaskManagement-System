@@ -111,6 +111,7 @@
 }
 
 .custom-select {
+  height: 36px;
   appearance: none;
   background-color: transparent;
   border: 1px solid var(--border-color);
@@ -137,13 +138,17 @@
 }
 
 .clear-btn {
+  flex-shrink: 0;
   color: var(--text-secondary);
-  height: 30px;
+  height: 36px;
+  min-width: auto;
   line-height: normal;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 12px;
+  font-family: var(--font-family);
   font-size: 0.85rem;
+  font-weight: 400;
 }
 
 .clear-btn:hover {
@@ -160,15 +165,20 @@
 }
 
 .date-filter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 32px;
-  padding: 0 10px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 0.78rem;
+  --mat-form-field-container-height: 36px;
+  --mat-form-field-container-vertical-padding: 6px;
+  --mat-form-field-container-text-font: var(--font-family);
+  --mat-form-field-container-text-size: 0.85rem;
+  --mat-form-field-container-text-weight: 400;
+  --mat-form-field-outlined-label-text-font: var(--font-family);
+  --mat-form-field-outlined-label-text-size: 0.85rem;
+  --mat-form-field-outlined-label-text-weight: 400;
+  --mat-form-field-outlined-container-shape: var(--radius-sm);
+  --mat-icon-button-state-layer-size: 32px;
+  width: 148px;
+  margin-bottom: -20px;
+  font-family: var(--font-family);
+  font-size: 0.85rem;
 }
 
 .date-range-filter {
@@ -185,16 +195,13 @@
 }
 
 .date-filter input {
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--text-primary);
-  font: inherit;
-  color-scheme: light;
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 400;
 }
 
-:host-context(.dark-theme) .date-filter input {
-  color-scheme: dark;
+.date-filter .mat-mdc-form-field-icon-suffix {
+  padding: 0;
 }
 
 .list-controls {
@@ -853,7 +860,7 @@
   }
 
   .date-filter {
-    justify-content: space-between;
+    width: 100%;
   }
 
   .date-range-filter {

@@ -8,6 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import { Subject, debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CategoryService } from '../../../core/services/category.service';
@@ -15,6 +19,7 @@ import { TaskService } from '../../../core/services/task.service';
 import { Category } from '../../../core/models/category.model';
 import { Priority, TaskFilter, TaskItem, TaskStatus } from '../../../core/models/task.model';
 import { TaskCardComponent } from '../task-card/task-card.component';
+import { ForceDatepickerBelowDirective } from '../../../shared/directives/force-datepicker-below.directive';
 
 type TaskViewMode = 'list' | 'board';
 
@@ -31,6 +36,11 @@ type TaskViewMode = 'list' | 'board';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    ForceDatepickerBelowDirective,
     TaskCardComponent
   ],
   templateUrl: './task-list.component.html',
@@ -45,6 +55,8 @@ export class TaskListComponent implements OnInit {
   totalCount = signal(0);
   viewMode = signal<TaskViewMode>('list');
   updatingTaskIds = signal<Set<string>>(new Set());
+  filterDueDateFrom: Date | null = null;
+  filterDueDateTo: Date | null = null;
 
   filter: TaskFilter = {
     page: 1,
@@ -178,7 +190,20 @@ export class TaskListComponent implements OnInit {
       sortBy: 'CreatedAt',
       sortDirection: 'desc'
     };
+    this.filterDueDateFrom = null;
+    this.filterDueDateTo = null;
     this.loadTasks();
+  }
+
+  onFilterDateChange(field: 'dueDateFrom' | 'dueDateTo', value: Date | null): void {
+    if (field === 'dueDateFrom') {
+      this.filterDueDateFrom = value;
+    } else {
+      this.filterDueDateTo = value;
+    }
+
+    this.filter[field] = value ? this.toLocalDateString(value) : undefined;
+    this.applyFilter();
   }
 
   setViewMode(mode: TaskViewMode): void {
@@ -260,6 +285,13 @@ export class TaskListComponent implements OnInit {
       updating ? next.add(taskId) : next.delete(taskId);
       return next;
     });
+  }
+
+  private toLocalDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   private sortTasks(tasks: TaskItem[]): TaskItem[] {
